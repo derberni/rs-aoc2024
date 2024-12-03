@@ -23,7 +23,7 @@ fn part2(distance_a: &Vec<u32>, distance_b: &Vec<u32>) -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    let input_file = BufReader::new(File::open("input/01.txt")?);
+    let input_file = BufReader::new(File::open("../../input/01.txt")?);
 
     let (mut distance_a, mut distance_b): (Vec<u32>, Vec<u32>) = input_file
         .lines()
