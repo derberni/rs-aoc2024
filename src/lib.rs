@@ -9,7 +9,10 @@ pub struct Coord {
 
 impl Coord {
     pub fn in_rect(self, top_left: Coord, bottom_right: Coord) -> bool {
-        top_left.x <= self.x && self.x <= bottom_right.x && top_left.y <= self.y && self.y <= bottom_right.y 
+        top_left.x <= self.x
+            && self.x <= bottom_right.x
+            && top_left.y <= self.y
+            && self.y <= bottom_right.y
     }
 }
 
@@ -19,6 +22,27 @@ impl ops::Add for Coord {
         Self::Output {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
+        }
+    }
+}
+
+impl ops::Sub for Coord {
+    type Output = Coord;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self::Output {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl ops::Mul<i32> for Coord {
+    type Output = Coord;
+    fn mul(self, rhs: i32) -> Self::Output {
+        Self::Output {
+            x: self.x * rhs,
+            y: self.y * rhs,
         }
     }
 }
