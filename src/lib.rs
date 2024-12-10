@@ -14,6 +14,10 @@ impl Coord {
             && top_left.y <= self.y
             && self.y <= bottom_right.y
     }
+
+    pub fn in_map(self, map_size: Coord) -> bool {
+        0 <= self.x && self.x <= map_size.x && 0 <= self.y && self.y <= map_size.y
+    }
 }
 
 impl ops::Add for Coord {
