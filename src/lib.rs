@@ -1,3 +1,6 @@
+use nom::bytes::complete::tag;
+use nom::sequence::separated_pair;
+use nom::IResult;
 use std::collections::HashMap;
 use std::ops;
 
@@ -8,6 +11,9 @@ pub struct Coord {
 }
 
 impl Coord {
+    pub fn zero() -> Coord {
+        Coord { x: 0, y: 0 }
+    }
     pub fn in_rect(self, top_left: Coord, bottom_right: Coord) -> bool {
         top_left.x <= self.x
             && self.x <= bottom_right.x
@@ -18,6 +24,16 @@ impl Coord {
     pub fn in_map(self, map_size: Coord) -> bool {
         0 <= self.x && self.x <= map_size.x && 0 <= self.y && self.y <= map_size.y
     }
+}
+
+pub fn parse_coord(input: &str) -> IResult<&str, Coord> {
+    let (rem, (x, y)) = separated_pair(
+        nom::character::complete::i32,
+        tag(","),
+        nom::character::complete::i32,
+    )(input)?;
+
+    Ok((rem, (Coord { x, y })))
 }
 
 impl ops::Add for Coord {
@@ -47,6 +63,36 @@ impl ops::Mul<i32> for Coord {
         Self::Output {
             x: self.x * rhs,
             y: self.y * rhs,
+        }
+    }
+}
+
+impl ops::Div<i32> for Coord {
+    type Output = Coord;
+    fn div(self, rhs: i32) -> Self::Output {
+        Self::Output {
+            x: self.x / rhs,
+            y: self.y / rhs,
+        }
+    }
+}
+
+impl ops::Div for Coord {
+    type Output = Coord;
+    fn div(self, rhs: Self) -> Self::Output {
+        Self::Output {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+        }
+    }
+}
+
+impl ops::Rem for Coord {
+    type Output = Coord;
+    fn rem(self, rhs: Self) -> Self::Output {
+        Self::Output {
+            x: self.x % rhs.x,
+            y: self.y % rhs.y,
         }
     }
 }
